@@ -17,9 +17,9 @@ RUN uv sync --frozen --no-dev
 # Copia todo o restante do código do projeto para o container
 COPY . /app
 
-# Expõe a porta padrão que o Streamlit utiliza
-EXPOSE 8501
+# Expõe a porta padrão que o HuggingFace Spaces utiliza (7860)
+EXPOSE 7860
 
 # Comando de inicialização do servidor
-# Passamos address=0.0.0.0 para que a AWS consiga mapear a porta corretamente para a web
-CMD ["uv", "run", "streamlit", "run", "src/app.py", "--server.port=8501", "--server.address=0.0.0.0"]
+# Passamos address=0.0.0.0 para que o HuggingFace consiga mapear a porta corretamente para a web
+CMD ["uv", "run", "streamlit", "run", "src/app.py", "--server.port=7860", "--server.address=0.0.0.0"]
