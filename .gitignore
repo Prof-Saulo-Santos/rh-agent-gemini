@@ -1,0 +1,15 @@
+# Python-generated files
+__pycache__/
+*.py[oc]
+build/
+dist/
+wheels/
+docs/
+*.egg-info
+
+# Virtual environments
+.venv
+
+# Secrets and Local Database
+.env
+faiss_index/
