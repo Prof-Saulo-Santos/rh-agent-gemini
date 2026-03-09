@@ -1,13 +1,6 @@
----
-title: Agente RH
-emoji: 👔
-colorFrom: blue
-colorTo: indigo
-sdk: docker
-app_port: 7860
-pinned: false
----
 # 👔 RH Agent: Assistente RAG com Memória Contextual
+
+**🚀 Aplicação ao Vivo:** [Teste o Agente no Hugging Face Spaces](https://huggingface.co/spaces/Prof-Saulo-Santos/agente-rh-gemini)
 
 ![Python](https://img.shields.io/badge/Python-3.13%2B-blue?logo=python&logoColor=white)
 ![Streamlit](https://img.shields.io/badge/Streamlit-Interface_Web-FF4B4B?logo=streamlit&logoColor=white)
