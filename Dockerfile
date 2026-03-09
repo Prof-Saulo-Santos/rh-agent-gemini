@@ -10,12 +10,14 @@ WORKDIR /app
 # Copia os arquivos de gerenciamento de dependências primeiro (Melhora o cache do Docker)
 COPY pyproject.toml uv.lock ./
 
-# Instala as dependências usando o uv
-# O --frozen garante que ele usará exatamente as versões do uv.lock
-RUN uv sync --frozen --no-dev
+# Instala os pacotes primeiro (usando o uv para velocidade)
+RUN uv sync --frozen
 
 # Copia todo o restante do código do projeto para o container
 COPY . /app
+
+# Gera o banco de dados vetorial FAISS a partir dos arquivos TXT
+RUN uv run python src/ingest.py
 
 # Expõe a porta padrão que o HuggingFace Spaces utiliza (7860)
 EXPOSE 7860
