@@ -16,12 +16,12 @@ pinned: false
 ![HuggingFace](https://img.shields.io/badge/HuggingFace-Embeddings-FFD21E?logo=huggingface&logoColor=black)
 ![FAISS](https://img.shields.io/badge/FAISS-Banco_Vetorial-1082C5)
 ![Docker](https://img.shields.io/badge/Docker-Conteineriza%C3%A7%C3%A3o-2496ED?logo=docker&logoColor=white)
-![AWS App Runner](https://img.shields.io/badge/AWS-App_Runner-232F3E?logo=amazon-aws&logoColor=white)
+![Hugging Face Spaces](https://img.shields.io/badge/Hugging%20Face-Spaces-FFD21E?logo=huggingface&logoColor=black)
 ![Pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white)
 
 ![Demonstração do Agente RH](image/rh-agent-gemini.jpg)
 
-Um sistema avançado de **Agentic RAG (Retrieval-Augmented Generation)** focado no setor de Recursos Humanos. Este projeto transcende a busca vetorial estática ao incorporar memória conversacional profunda, permitindo interações humanas fluidas e consultas complexas através de múltiplos documentos normativos. Desenvolvido com o ecossistema moderno de IA e orquestrado no AWS App Runner.
+Um sistema avançado de **Agentic RAG (Retrieval-Augmented Generation)** focado no setor de Recursos Humanos. Este projeto transcende a busca vetorial estática ao incorporar memória conversacional profunda, permitindo interações humanas fluidas e consultas complexas através de múltiplos documentos normativos. Desenvolvido com o ecossistema moderno de IA e hospedado no Hugging Face Spaces.
 
 ## 🎯 Por que este projeto é diferente?
 
@@ -35,10 +35,10 @@ O sistema foi arquitetado visando isolamento, rapidez e pronto para escalar na n
 - **LLM Core:** Google Gemini 2.5 Flash via `langchain-google-genai`.
 - **Orquestração Inteligente (LCEL):** LangChain com `RunnableWithMessageHistory` e `history_aware_retriever`.
 - **Motor de Embeddings Local:** `all-MiniLM-L6-v2` via HuggingFace (Open-source, rodando na CPU para custo-zero de vetorização).
-- **Vector Database:** FAISS (Facebook AI Similarity Search) para busca semântica em lote (`DirectoryLoader`).
+- **Vector Database:** FAISS (Facebook AI Similarity Search) gerado em tempo de execução no deploy.
 - **Gerenciador de Pacotes Python:** `uv` (Rust-based, ultrarrápido).
 - **Interface:** Streamlit com `StreamlitChatMessageHistory` para gerenciar a sessão local do usuário.
-- **Deploy/DevOps:** Imagem Docker otimizada (`Dockerfile`) gerenciada via Amazon ECR e hospedada no AWS App Runner (Serverless Container).
+- **Deploy/DevOps:** Imagem Docker otimizada (`Dockerfile`) e hospedada nativamente no Hugging Face Spaces com suporte a WebSockets.
 
 ## 🚀 Como Executar Localmente
 
@@ -59,18 +59,18 @@ uv run python src/ingest.py
 uv run streamlit run src/app.py
 ```
 
-## ☁️ Deploy MLOps na Nuvem (AWS App Runner)
+## ☁️ Deploy MLOps na Nuvem (Hugging Face Spaces)
 
-Este repositório está pronto para a nuvem. O `Dockerfile` expõe a porta `8501` e gerencia as dependências "frozen" via `uv`.
+Este repositório está perfeitamente ajustado para o Hugging Face Spaces. O `Dockerfile` expõe a porta `7860` e gera o banco **FAISS** em tempo de execução (`cmd`) para garantir acesso aos documentos mais recentes.
 
-1. Autenticação no ECR via AWS CLI.
-2. Build e Push da Imagem:
+1. Crie um "New Space" no [Hugging Face](https://huggingface.co/spaces) escolhendo **Docker** e o template **Streamlit**.
+2. Nas configurações do seu Space, adicione um Secret chamado `GOOGLE_API_KEY`.
+3. Adicione o seu Space como *remote* git no seu terminal local e suba o código:
    ```bash
-   docker build -t rh-agent-gemini .
-   docker tag rh-agent-gemini:latest <id_conta>.dkr.ecr.sa-east-1.amazonaws.com/rh-agent-gemini:latest
-   docker push <id_conta>.dkr.ecr.sa-east-1.amazonaws.com/rh-agent-gemini:latest
+   git remote add huggingface https://SEU_USUARIO:SEU_TOKEN@huggingface.co/spaces/SEU_USUARIO/nome-do-space
+   git push --force huggingface main
    ```
-3. Anexe o contêiner a um serviço no **AWS App Runner** para obter um link público HTTPS auto-escalável.
+4. A plataforma realizará o Build da imagem Docker (instalando as dependências `uv`) e disponibilizará a URL pública instantaneamente e com suporte nativo a WebSockets!
 
 ---
 *Construído como bloco fundacional para Arquitetura de LLMs Multi-Agentes em Projetos de Engenharia de IA.*
